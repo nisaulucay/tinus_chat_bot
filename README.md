@@ -30,7 +30,7 @@ Geleneksel anahtar kelime eşleştirmesine dayalı chatbot sistemlerinin sınır
 
 ## 📂 Proje Dosya Yapısı
 
-```text
+
 tinus-chatbot-backend/
 │
 ├── app/
