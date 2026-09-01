@@ -1,0 +1,113 @@
+{
+  "categories": [
+    {
+      "category_id": "kurumsal",
+      "category_name": "Kurumsal Bilgiler ve İletişim",
+      "questions": [
+        {
+          "id": "k1",
+          "question": "Tinus Technologies nedir ve ne iş yapar?",
+          "answer": "Tinus Technologies, diş hekimliği ve medikal sektörlere yenilikçi çözümler sunan, akademik çalışmalar ve klinik uygulamalarla desteklenen güvenilir bir teknoloji firmasıdır."
+        },
+        {
+          "id": "k2",
+          "question": "Şirketinizde kaç kişi çalışıyor veya ekibiniz nasıl?",
+          "answer": "Tinus Technologies, 10'dan fazla uzman ekibe sahip dinamik bir yapıdadır."
+        },
+        {
+          "id": "k3",
+          "question": "Sektörde kaç yıllık deneyiminiz var ve kaç proje tamamladınız?",
+          "answer": "10+ yıllık deneyime sahip olan firmamız, bugüne kadar 55+ tamamlanan projeye imza atmış ve 11+ iş ortağıyla çalışmıştır."
+        },
+        {
+          "id": "k4",
+          "question": "Şirketinizin adresi nerededir?",
+          "answer": "Kazım Özalp Mah. Kız Kulesi Sok. Elif Apt. No: 21/6 Gaziosmanpaşa, Çankaya/ANKARA adresinde yer almaktayız."
+        },
+        {
+          "id": "k5",
+          "question": "İletişim numaralarınız ve çalışma saatleriniz nelerdir?",
+          "answer": "Bize +90 850 303 78 93 numaralı telefondan veya info@tinustech.com adresinden ulaşabilirsiniz. Çalışma saatlerimiz Pazartesi - Cuma günleri 09:00 - 18:00 arasındadır."
+        }
+      ]
+    },
+    {
+      "category_id": "hizmetler",
+      "category_name": "Mühendislik ve Hizmetler",
+      "questions": [
+        {
+          "id": "h1",
+          "question": "Sonlu elemanlar analizi (FEA) hizmetiniz nedir?",
+          "answer": "Dental ve medikal alanlarda kullanılan yapılar üzerindeki biyomekanik etkileri ileri düzey sonlu elemanlar analizi (mandibula ve implant üzerinde FEA) ile inceliyoruz."
+        },
+        {
+          "id": "h2",
+          "question": "Kişiye özel implant tasarımı nasıl yapılır?",
+          "answer": "Hastaya özel klinik ihtiyaçları karşılamak amacıyla dijital modelleme ve ileri üretim teknolojileriyle kişiselleştirilmiş implant çözümleri geliştiriyoruz."
+        },
+        {
+          "id": "h3",
+          "question": "3D biyomodelleme hizmetiniz neleri kapsar?",
+          "answer": "FDM ve SLA teknolojileriyle yüksek hassasiyetli anatomik biyomodeller (çene ve kafatası modelleri) üreterek planlama ve eğitim süreçlerine katkı sağlıyoruz."
+        },
+        {
+          "id": "h4",
+          "question": "Mekanik test ve validasyon yapıyor musunuz?",
+          "answer": "Evet, malzeme ve tasarımların mekanik dayanımını çeşitli test ve ölçüm yöntemleriyle değerlendirip doğruyoruz."
+        },
+        {
+          "id": "h5",
+          "question": "Akademik dijital ölçüm ve cerrahi planlama desteğiniz var mı?",
+          "answer": "Dijital modelleme tabanlı akademik çalışmalar için ileri düzey ölçüm/uyumluluk analizleri ve ameliyat öncesi simülasyon/planlama desteği sağlıyoruz."
+        },
+        {
+          "id": "h6",
+          "question": "Projeler ne kadar sürede tamamlanır?",
+          "answer": "Proje karmaşıklığına bağlı olarak 30-45 iş günü arasında tamamlanmaktadır."
+        }
+      ]
+    },
+    {
+      "category_id": "urunler",
+      "category_name": "Ürünler ve Distribütörlük",
+      "questions": [
+        {
+          "id": "u1",
+          "question": "Hangi markaların distribütörüsünüz?",
+          "answer": "Türkiye'de LargeV ve HDXWill markalarının resmi distribütörüyüz."
+        },
+        {
+          "id": "u2",
+          "question": "Hangi görüntüleme cihazı modellerini satıyorsunuz?",
+          "answer": "LargeV markasına ait Smart3D-X ve HiRes3D ile HDXWILL markasına ait Dentri, Eco-X ve Dentio modellerinin satış ve teknik servis süreçlerini yürütüyoruz."
+        },
+        {
+          "id": "u3",
+          "question": "Dental ürünlerin teslimat süresi nedir?",
+          "answer": "Tüm dental ürünlerimizin teslimat süreleri 3-5 iş günüdür."
+        },
+        {
+          "id": "u4",
+          "question": "Ürün garantisi ve teknik destek var mı?",
+          "answer": "Tüm ürünlerimiz 2-5 yıl arası üretici firma garantisine sahiptir. Ayrıca 7/24 teknik destek ve ücretsiz kurulum/eğitim hizmeti sunuyoruz."
+        }
+      ]
+    },
+    {
+      "category_id": "satis_ve_musteri",
+      "category_name": "Müşteriler ve Ödeme Koşulları",
+      "questions": [
+        {
+          "id": "s1",
+          "question": "Hizmetlerinizden kimler faydalanabilir?",
+          "answer": "Diş hekimleri, medikal cihaz üreticileri, üniversiteler, araştırma merkezleri ve hastaneler hizmetlerimizden faydalanabilir."
+        },
+        {
+          "id": "s2",
+          "question": "Hangi ödeme yöntemlerini kabul ediyorsunuz?",
+          "answer": "Banka havalesi/EFT, kredi kartı (taksit imkanı) ve senet ile ödeme kabul ediyoruz."
+        }
+      ]
+    }
+  ]
+}
