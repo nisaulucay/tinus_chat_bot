@@ -21,7 +21,7 @@ app.add_middleware(
 )
 
 # Yeni Google GenAI İstemcisi
-client = genai.Client(api_key="AQ.Ab8RN6ID1Fhs-hDtqkdxCpuLMEK8jcV_-lscpVfsm9VsVdI2CA")
+client = genai.Client(api_key="gemini_api_key")
 
 def load_faqs():
     file_path = os.path.join(os.path.dirname(__file__), "faqs.json")
