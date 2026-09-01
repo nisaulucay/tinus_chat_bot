@@ -21,7 +21,7 @@ app.add_middleware(
 )
 
 # Yeni Google GenAI İstemcisi
-client = genai.Client(api_key="gemini_api_key")
+client = genai.Client(api_key="YOUR_GOOGLE_GENAI_API_KEY")
 
 def load_faqs():
     file_path = os.path.join(os.path.dirname(__file__), "faqs.json")
@@ -69,9 +69,9 @@ async def ask_question(request: QuestionRequest):
 
     try:
         response = client.models.generate_content(
-            model="gemini-1.5-flash",
-            contents=prompt,
-        )
+    model="gemini-3.6-flash",
+    contents=prompt,
+)
         answer = response.text
         return {
             "matched": True,

@@ -80,6 +80,7 @@ $env:GEMINI_API_KEY="senin_api_anahtarin"
 5. Sunucuyu Başlatın
 
 uvicorn app.main:app --reload --port 8001
+<img width="955" height="748" alt="image" src="https://github.com/user-attachments/assets/12a0c0ff-24fb-4a04-99cb-efa6532e1ae5" />
 
 
 
