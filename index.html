@@ -102,6 +102,9 @@
 </div>
 
 <script>
+    // Sayfa yüklendiğinde benzersiz bir oturum kimliği (session_id) oluştur.
+    const sessionId = Math.random().toString(36).substring(2, 15);
+
     async function sendMessage() {
         const inputField = document.getElementById("userInput");
         const query = inputField.value.trim();
@@ -120,11 +123,11 @@
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
         try {
-            // FastAPI backend'e istek atma
+            // FastAPI backend'e istek atma (session_id eklendi)
             const response = await fetch("/api/v1/ask", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ query: query })
+                body: JSON.stringify({ session_id: sessionId, query: query })
             });
 
             const data = await response.json();

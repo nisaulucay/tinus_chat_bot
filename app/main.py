@@ -1,11 +1,16 @@
 import json
 import os
+from dotenv import load_dotenv
+
+# gizli anahtarları sisteme yükle
+load_dotenv()
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from fastapi.responses import FileResponse
 from google import genai
-
+from google.genai import types
 app = FastAPI(
     title="Tinus Technologies Chatbot API",
     description="Sıkça Sorulan Sorular ve Akıllı Sohbet Robotu Backend Servisi",
@@ -20,8 +25,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Yeni Google GenAI İstemcisi
 client = genai.Client()
+
+# HAFIZA: Oturumları geçici bellekte tutacağımız sözlük
+chat_sessions = {}
 
 def load_faqs():
     file_path = os.path.join(os.path.dirname(__file__), "faqs.json")
@@ -31,6 +38,7 @@ def load_faqs():
         return json.load(f)
 
 class QuestionRequest(BaseModel):
+    session_id: str  # Frontend'den gelecek oturum kimliği
     query: str
 
 @app.get("/", response_class=FileResponse, tags=["Chatbot UI"])
@@ -48,34 +56,37 @@ async def get_categories():
 
 @app.post("/api/v1/ask", tags=["Chatbot"])
 async def ask_question(request: QuestionRequest):
-    data = load_faqs()
-    
-    context_text = ""
-    for category in data.get("categories", []):
-        context_text += f"Kategori: {category.get('category_name')}\n"
-        for faq in category.get("questions", []):
-            context_text += f"- Soru: {faq['question']}\n  Cevap: {faq['answer']}\n"
-
-    prompt = f"""
-    Sen Tinus Technologies'in akıllı destek asistanısın. Kullanıcıların selamlaşmalarına (merhaba, nasılsın vb.) kibarca karşılık ver. 
-    Aşağıdaki kurumsal SSS veritabanını referans alarak soruları doğal, akıcı ve samimi bir Türkçe ile yanıtla. 
-    Eğer bilgi veritabanında yoksa, kullanıcıyı profesyonelce Tinus Technologies ekibiyle iletişime geçmeye yönlendir.
-
-    Veritabanı:
-    {context_text}
-
-    Kullanıcı Sorusu: {request.query}
-    """
-
     try:
-        response = client.models.generate_content(
-    model="gemini-3.6-flash",
-    contents=prompt,
+        # 1. Oturum yoksa yeni bir sohbet başlat ve SSS'i modele öğret
+        if request.session_id not in chat_sessions:
+            data = load_faqs()
+            context_text = ""
+            for category in data.get("categories", []):
+                context_text += f"Kategori: {category.get('category_name')}\n"
+                for faq in category.get("questions", []):
+                    context_text += f"- Soru: {faq['question']}\n  Cevap: {faq['answer']}\n"
+            
+            sys_instruct = (
+    "Sen Tinus Technologies'in akıllı destek asistanısın ve kullanıcıyla yaptığın geçmiş konuşmaları NET BİR ŞEKİLDE HATIRLIYORSUN. "
+    "Kullanıcı 'sana az önce ne sordum?', 'önceki mesajım neydi?' gibi sohbetin geçmişiyle ilgili sorular sorarsa, hafızanı kullanarak doğrudan cevap ver. "
+    "Bunun dışındaki şirket ve ürün soruları için sadece aşağıdaki SSS veritabanını kullan. Veritabanında olmayan konularda ekibe yönlendir.\n\n"
+    f"Veritabanı:\n{context_text}"
 )
-        answer = response.text
+            
+            chat_sessions[request.session_id] = client.chats.create(
+                model="gemini-1.5-flash",
+                config=types.GenerateContentConfig(
+                    system_instruction=sys_instruct
+                )
+            )
+
+        # 2. İlgili oturumu al ve mesajı gönder
+        chat = chat_sessions[request.session_id]
+        response = chat.send_message(request.query)
+        
         return {
             "matched": True,
-            "answer": answer,
+            "answer": response.text,
             "category": "Google Gemini Destekli Yanıt"
         }
         
