@@ -74,7 +74,7 @@ async def ask_question(request: QuestionRequest):
 )
             
             chat_sessions[request.session_id] = client.chats.create(
-                model="gemini-2.0-flash",
+                model="gemini-3.6-flash",
                 config=types.GenerateContentConfig(
                     system_instruction=sys_instruct
                 )
