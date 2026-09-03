@@ -7,7 +7,8 @@
     <style>
         body { 
             font-family: Arial, sans-serif; 
-            background: #f4f7f6; 
+            background: #cbd5e1; /* Gün 36: Önceki soluk tona göre çok daha belirgin kontrast arka plan */
+            color: #1e293b;      /* Yüksek okunabilirlik için koyu metin rengi */
             margin: 0; 
             padding: 20px; 
             display: flex; 
@@ -19,19 +20,23 @@
             width: 750px; 
             background: white; 
             border-radius: 12px; 
-            box-shadow: 0 6px 20px rgba(0,0,0,0.12); 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15); 
             overflow: hidden; 
             display: flex; 
             flex-direction: column; 
             height: 80vh; 
         }
         .chat-header { 
-            background: #007bff; 
+            background: #0284c7; /* Daha modern bir mavi tonu */
             color: white; 
             padding: 18px; 
             text-align: center; 
             font-size: 1.1rem;
             font-weight: bold; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
         .chat-messages { 
             flex: 1; 
@@ -49,17 +54,34 @@
             font-size: 0.95rem;
         }
         .user-message { 
-            background: #007bff; 
+            background: #0284c7; 
             color: white; 
             align-self: flex-end; 
         }
         .bot-message { 
-            background: #e9ecef; 
-            color: #333; 
+            background: #f1f5f9; /* Gün 36: Kontrastı artırılmış, hemen fark edilen bot mesaj kutusu */
+            color: #0f172a;      /* Net okunabilirlik için koyu metin */
+            border: 1px solid #e2e8f0;
             align-self: flex-start; 
         }
+        .feedback-buttons {
+            margin-top: 8px;
+            display: flex;
+            gap: 8px;
+        }
+        .feedback-buttons button {
+            background: none;
+            border: 1px solid #94a3b8;
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 2px 6px;
+            font-size: 0.9rem;
+        }
+        .feedback-buttons button:hover {
+            background: #e2e8f0;
+        }
         .chat-input-area { 
-            border-top: 1px solid #ddd; 
+            border-top: 1px solid #cbd5e1; 
             padding: 15px; 
             background: #fff; 
             display: flex; 
@@ -68,14 +90,14 @@
         .chat-input-area input { 
             flex: 1; 
             padding: 12px; 
-            border: 1px solid #ccc; 
+            border: 1px solid #cbd5e1; 
             border-radius: 6px; 
             outline: none; 
             font-size: 1rem;
         }
         .chat-input-area button { 
             padding: 12px 20px; 
-            background: #007bff; 
+            background: #0284c7; 
             color: white; 
             border: none; 
             border-radius: 6px; 
@@ -84,14 +106,16 @@
             font-weight: bold;
         }
         .chat-input-area button:hover { 
-            background: #0056b3; 
+            background: #0369a1; 
         }
     </style>
 </head>
 <body>
 
 <div class="chat-container">
-    <div class="chat-header">Tinus Technologies Destek Asistanı</div>
+    <div class="chat-header">
+        Tinus Technologies Destek Asistanı
+    </div>
     <div id="chatMessages" class="chat-messages">
         <div class="message bot-message">Merhaba! Tinus Technologies hakkında size nasıl yardımcı olabilirim?</div>
     </div>
@@ -102,7 +126,6 @@
 </div>
 
 <script>
-    // Sayfa yüklendiğinde benzersiz bir oturum kimliği (session_id) oluştur.
     const sessionId = Math.random().toString(36).substring(2, 15);
 
     async function sendMessage() {
@@ -112,18 +135,15 @@
 
         const messagesContainer = document.getElementById("chatMessages");
 
-        // Kullanıcı mesajını ekrana ekle
         messagesContainer.innerHTML += `<div class="message user-message">${query}</div>`;
         inputField.value = "";
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
-        // Geçici "Düşünüyor..." göstergesi
         const loadingId = "loading-" + Date.now();
         messagesContainer.innerHTML += `<div id="${loadingId}" class="message bot-message" style="opacity: 0.6; font-style: italic;">Asistan düşünüyor...</div>`;
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
         try {
-            // FastAPI backend'e istek atma (session_id eklendi)
             const response = await fetch("/api/v1/ask", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -132,16 +152,41 @@
 
             const data = await response.json();
 
-            // "Düşünüyor..." yazısını kaldır
             document.getElementById(loadingId).remove();
 
-            // Bot yanıtını ekrana ekle
-            messagesContainer.innerHTML += `<div class="message bot-message">${data.answer}</div>`;
+            const botMessageHTML = `
+                <div class="message bot-message">
+                    ${data.answer}
+                    <div class="feedback-buttons">
+                        <button onclick="sendFeedback(true, this)" title="Beğen">👍</button>
+                        <button onclick="sendFeedback(false, this)" title="Beğenme">👎</button>
+                    </div>
+                </div>
+            `;
+            messagesContainer.innerHTML += botMessageHTML;
         } catch (error) {
             document.getElementById(loadingId).remove();
             messagesContainer.innerHTML += `<div class="message bot-message">Bağlantı hatası oluştu, lütfen tekrar deneyin.</div>`;
         }
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    async function sendFeedback(isLiked, buttonElement) {
+        const feedbackText = isLiked ? "Kullanıcı bu mesajı beğendi 👍" : "Kullanıcı bu mesajı beğenmedi 👎";
+        console.log(feedbackText);
+
+        const parentDiv = buttonElement.parentElement;
+        parentDiv.innerHTML = isLiked ? "<span>Teşekkürler! 👍</span>" : "<span>Geri bildiriminiz alındı. 👎</span>";
+
+        try {
+            await fetch('/api/v1/feedback', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ liked: isLiked, message: feedbackText })
+            });
+        } catch (error) {
+            console.error("Geri bildirim gönderilemedi:", error);
+        }
     }
 
     function handleKeyPress(event) {

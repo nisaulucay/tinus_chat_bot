@@ -1,8 +1,0 @@
-2026-09-02 12:56:44,844 - INFO - Yeni oturum oluşturuluyor. Session ID: 6n0hdeiqcoe
-2026-09-02 12:56:44,901 - INFO - AFC is enabled with max remote calls: 10.
-2026-09-02 12:56:49,154 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent "HTTP/1.1 200 OK"
-2026-09-02 12:56:49,156 - INFO - API Yanıt Süresi: 4.31 saniye (Session: 6n0hdeiqcoe)
-2026-09-02 12:57:16,758 - INFO - Yeni oturum oluşturuluyor. Session ID: 1ie0xswz61k
-2026-09-02 12:57:16,819 - INFO - AFC is enabled with max remote calls: 10.
-2026-09-02 12:57:34,523 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent "HTTP/1.1 200 OK"
-2026-09-02 12:57:34,539 - INFO - API Yanıt Süresi: 17.78 saniye (Session: 1ie0xswz61k)

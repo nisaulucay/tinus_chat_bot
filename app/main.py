@@ -13,7 +13,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # LOGGING YAPILANDIRMASI
-# Hataları ve bilgilendirmeleri 'app.log' dosyasına kaydeder
 logging.basicConfig(
     filename="app.log",
     level=logging.INFO,
@@ -52,6 +51,10 @@ class QuestionRequest(BaseModel):
     session_id: str  # Frontend'den gelecek oturum kimliği
     query: str
 
+class FeedbackRequest(BaseModel):
+    liked: bool
+    message: str
+
 @app.get("/", response_class=FileResponse, tags=["Chatbot UI"], summary="Arayüzü Yükle", description="Kullanıcı arayüzünü (index.html) tarayıcıya sunar.")
 async def serve_frontend():
     html_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "index.html")
@@ -69,7 +72,6 @@ async def get_categories():
 async def ask_question(request: QuestionRequest):
     start_time = time.time()  # Kronometreyi başlat
     try:
-        # 1. Oturum yoksa yeni bir sohbet başlat ve SSS'i modele öğret
         if request.session_id not in chat_sessions:
             logging.info(f"Yeni oturum oluşturuluyor. Session ID: {request.session_id}")
             data = load_faqs()
@@ -94,7 +96,6 @@ async def ask_question(request: QuestionRequest):
                 )
             )
 
-        # 2. İlgili oturumu al ve mesajı gönder
         chat = chat_sessions[request.session_id]
         response = chat.send_message(request.query)
         
@@ -119,3 +120,12 @@ async def ask_question(request: QuestionRequest):
             "answer": f"Yapay zeka servisine bağlanırken bir hata oluştu: {str(e)}",
             "redirect_contact": True
         }
+
+@app.post("/api/v1/feedback", tags=["Chatbot"], summary="Kullanıcı Geri Bildirimi Al", description="Kullanıcıların yanıtlar için gönderdiği beğenme/beğenmeme durumunu kaydeder.")
+async def receive_feedback(request: FeedbackRequest):
+    if request.liked:
+        logging.info("Geri bildirim: Kullanıcı bu mesajı beğendi 👍")
+    else:
+        logging.info("Geri bildirim: Kullanıcı bu mesajı beğenmedi 👎")
+        
+    return {"status": "success", "detail": "Geri bildiriminiz kaydedildi."}
