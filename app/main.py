@@ -9,6 +9,7 @@ from fastapi.responses import FileResponse
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv
+from pydantic import BaseModel, Field
 
 load_dotenv()
 
@@ -48,9 +49,9 @@ def load_faqs():
         return json.load(f)
 
 class QuestionRequest(BaseModel):
-    session_id: str  # Frontend'den gelecek oturum kimliği
-    query: str
-
+    session_id: str
+    query: str = Field(min_length=1, description="Kullanıcının sorusu boş olamaz")
+    
 class FeedbackRequest(BaseModel):
     liked: bool
     message: str
